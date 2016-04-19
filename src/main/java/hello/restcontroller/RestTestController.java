@@ -3,8 +3,10 @@ package hello.restcontroller;
 import hello.controllers.*;
 import hello.models.Customer;
 import hello.models.Greeting;
+import hello.repositories.CustomerRepository;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,8 @@ public class RestTestController {
     
     private static final String template = "Hello, %s!";
     private static AtomicLong counter = new AtomicLong();
+    @Autowired
+    CustomerRepository customerRepository;
         
     @RequestMapping("/greeting2")
     public Greeting greeting(@RequestParam(value="name", required=false, defaultValue="World") String name) {
@@ -27,7 +31,7 @@ public class RestTestController {
         String firstName=requestParams.get("firstName");
         String lastName=requestParams.get("lastName");
         Customer nc = new Customer(firstName, lastName);
+        customerRepository.save(nc);
         return nc;
-    }
-    
+    }    
 }
